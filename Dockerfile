@@ -16,6 +16,6 @@ RUN apk add --no-cache tzdata \
 
 ENV TZ Asia/Shanghai
 
-COPY --from=builder /go/src/github.com/iceman739/prometheus-transfer/transfer /transfer
+COPY --from=builder /go/src/github.com/gsakun/prometheus-transfer/transfer /transfer
 
 ENTRYPOINT ["./transfer"]
