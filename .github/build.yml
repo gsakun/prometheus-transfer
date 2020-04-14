@@ -1,0 +1,26 @@
+name: Build & Deploy
+
+on: [push]
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build image
+        run: docker build . --file Dockerfile --tag prometheus-transfer
+
+      - name: Log into registry
+        run: echo "${{ secrets.DOCKERHUB_PASSWD }}" | docker login -u "${{ secrets.DOCKERHUB_USER }}" --password-stdin
+
+      - name: Push image
+        run: |
+          IMAGE_ID=gsakun/prometheus-transfer
+          echo "HELLO"
+          echo IMAGE_ID=$IMAGE_ID
+          VERSION=`date "+%Y%m%d"`
+          docker tag prometheus-transfer $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION 
