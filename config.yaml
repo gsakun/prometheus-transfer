@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mutate-injector-transfer-webhook-configmap
+  namespace: service
+data:
+  sidecarconfig.yaml: |
+    containers:
+    - env:
+        - name: PODNAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: status.podIP
+        - name: URI
+          value: http://127.0.0.1:8888/jaminfo
+        image: socp.io/zk/prometheus-transfer:20200414
+        imagePullPolicy: IfNotPresent
+        name: transter-proxy
+    
