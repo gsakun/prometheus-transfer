@@ -98,5 +98,5 @@ func main() {
 	exporter := NewExporter(metriclist)
 	prometheus.MustRegister(exporter)
 	http.Handle(metricsPath, promhttp.Handler())
-	fmt.Println(http.ListenAndServe(listenAddress, nil))
+	log.Infoln(http.ListenAndServe(listenAddress, nil))
 }
