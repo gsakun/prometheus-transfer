@@ -56,7 +56,7 @@ func queryMetric() (data map[string]float64) {
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		panic(err)
+		log.Errorln(err)
 	}
 	defer resp.Body.Close()
 	if err != nil {
@@ -89,6 +89,9 @@ func init() {
 func main() {
 	metricsPath := "/metrics"
 	listenAddress := "0.0.0.0:16666"
+	if len(metriclist) == 0 {
+		log.Fatalln("App's metric list is nil,please check app metric interface")
+	}
 	exporter := NewExporter(metriclist)
 	prometheus.MustRegister(exporter)
 	http.Handle(metricsPath, promhttp.Handler())
