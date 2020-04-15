@@ -57,15 +57,18 @@ func queryMetric() (data map[string]float64) {
 	resp, err := client.Do(req)
 	if err != nil {
 		log.Errorln(err)
+		return nil
 	}
 	defer resp.Body.Close()
 	if err != nil {
 		log.Errorf("querydata error %v")
+		return nil
 	}
 	defer resp.Body.Close()
 	s, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		log.Errorf("querydata error %v")
+		return nil
 	}
 	_ = json.Unmarshal(s, &data)
 	return
