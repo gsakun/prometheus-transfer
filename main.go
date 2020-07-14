@@ -51,7 +51,7 @@ func (e *Exporter) Collect(ch chan<- prometheus.Metric) {
 
 func queryMetric() (data map[string]float64) {
 	url := os.Getenv("URI")
-	req, err := http.NewRequest("POST", url, nil)
+	req, err := http.NewRequest("GET", url, nil)
 	req.Header.Set("Content-Type", "application/json")
 	client := &http.Client{}
 	resp, err := client.Do(req)
