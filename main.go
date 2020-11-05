@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -80,7 +81,7 @@ func (e *Exporter) Describe(ch chan<- *prometheus.Desc) {
 	}
 }
 
-func init() {
+func initlist() {
 	data := queryMetric()
 	if len(data) != 0 {
 		for k, _ := range data {
@@ -92,8 +93,15 @@ func init() {
 func main() {
 	metricsPath := "/metrics"
 	listenAddress := "0.0.0.0:16666"
-	if len(metriclist) == 0 {
-		log.Fatalln("App's metric list is nil,please check app metric interface")
+	for i := 1; i < 6; i++ {
+		initlist()
+		if len(metriclist) == 0 {
+			time.Sleep(time.Duration(i) * 30 * time.Second)
+			continue
+		} else {
+			break
+		}
+		log.Errorln("App's metric list is nil,please check app metric interface")
 	}
 	exporter := NewExporter(metriclist)
 	prometheus.MustRegister(exporter)
