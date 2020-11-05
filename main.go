@@ -93,6 +93,7 @@ func initlist() {
 func main() {
 	metricsPath := "/metrics"
 	listenAddress := "0.0.0.0:16666"
+	time.Sleep(30 * time.Second)
 	for i := 1; i < 6; i++ {
 		initlist()
 		if len(metriclist) == 0 {
